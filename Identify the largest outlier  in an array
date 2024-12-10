@@ -1,0 +1,32 @@
+class Solution {
+    public int getLargestOutlier(int[] nums) {
+        int sum = 0;
+        for(int k : nums){
+            sum += k;
+        }
+        Map<Integer, Integer> multiset = new HashMap<>();
+        for(int k : nums){
+            multiset.put(k, multiset.getOrDefault(k,0) + 1);
+        }
+
+    int ans = Integer.MIN_VALUE;
+    for(int k : nums){
+        if((sum - k) % 2 == 0){
+            // Remove k temporarily
+            multiset.put(k, multiset.get(k) - 1);
+            if(multiset.get(k) == 0){
+                multiset.remove(k);
+            }
+
+            int p = (sum - k)/2;
+            // check p exists in the multiset
+            if(multiset.containsKey(p)) {
+                ans = Math.max(ans, k);
+            }
+            // restore k
+        multiset.put(k, multiset.getOrDefault(k, 0) + 1);
+        }
+    }
+    return ans;
+  }
+}
